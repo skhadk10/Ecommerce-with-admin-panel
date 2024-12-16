@@ -3,6 +3,10 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
+
+
+const authRouter = require("./routes/auth-routes");
+
 // create a database connection
 mongoose
   .connect("mongodb://localhost:27017/ecommerce")
@@ -30,5 +34,9 @@ app.use(
 
 app.use(cookieParser());
 app.use(express.json());
+
+//middleware
+
+app.use('api/auth',authRouter)
 
 app.listen(PORT, () => console.log(`Server is runnin g on port ${PORT}`));
