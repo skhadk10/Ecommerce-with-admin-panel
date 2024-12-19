@@ -15,10 +15,21 @@ import ShoppingCheckout from "./pages/shopping-view/checkout.jsx";
 import ShoppingAccount from "./pages/shopping-view/account.jsx";
 import CheckAuth from "./component/common/check-auth.jsx";
 import UnauthPage from "./pages/unauth-page/index.jsx";
+import { Toaster } from "./components/ui/toaster.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { checkAuth } from "./store/auth-slice/index.js";
 
 function App() {
-  const isAuthenticated = false;
-  const user = null;
+  const { user, isAuthenticated ,loading} = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
+  if(loading) return <div>Loading...</div>
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
@@ -62,6 +73,7 @@ function App() {
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Toaster />
     </div>
   );
 }
