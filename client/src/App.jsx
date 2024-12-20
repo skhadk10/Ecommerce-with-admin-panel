@@ -20,8 +20,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { checkAuth } from "./store/auth-slice/index.js";
 
+import { Skeleton } from "@/components/ui/skeleton"
+
+
 function App() {
-  const { user, isAuthenticated ,loading} = useSelector((state) => state.auth);
+  const { user, isAuthenticated ,isLoading} = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
 
@@ -29,7 +32,10 @@ function App() {
     dispatch(checkAuth());
   }, [dispatch]);
 
-  if(loading) return <div>Loading...</div>
+  if(isLoading) return <Skeleton className="w-[600px] h-[600px] rounded-full" />
+
+
+  console.log(isLoading,user);
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
