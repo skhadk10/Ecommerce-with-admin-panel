@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CommonForm from "../../component/common/form";
-import { registerFormControls } from "@/component/common";
+import { registerFormControls } from "@/component/config";
 import { useDispatch } from "react-redux";
 import { registerUser } from "@/store/auth-slice";
 import { useToast } from "@/hooks/use-toast";
