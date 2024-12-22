@@ -34,8 +34,6 @@ function App() {
 
   if(isLoading) return <Skeleton className="w-[600px] h-[600px] rounded-full" />
 
-
-  console.log(isLoading,user);
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>

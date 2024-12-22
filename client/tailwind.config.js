@@ -64,7 +64,11 @@ import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"], // Enable dark mode based on a class
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/shadcn-ui/**/*.js",
+  ],
   theme: {
     extend: {
       borderRadius: {
@@ -92,8 +96,8 @@ export default {
           foreground: "hsl(var(--secondary-foreground))",
         },
         muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
           // DEFAULT: "rgb(var(--muted) / <alpha-value>)",
           // foreground: "rgb(var(--muted-foreground) / <alpha-value>)",
         },

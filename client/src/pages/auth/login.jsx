@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CommonForm from "../../component/common/form";
-import { loginFormControls } from "@/component/common";
 import { useDispatch } from "react-redux";
 import { loginUser } from "@/store/auth-slice";
 import { useToast } from "@/hooks/use-toast";
+import { loginFormControls } from "@/component/config";
 
 const initialState = {
   email: "rickeykhd@gmail.com",
@@ -19,15 +19,10 @@ const AuthLogin = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     dispatch(loginUser(formData)).then((data) => {
-      // console.log(data, "soluton");
       if (data?.payload?.success) {
         toast({
           title: data?.payload?.message,
         });
-        // if (data?.payload?.user?.role === "admin") {
-        //   navigate("/admin/dashboard");
-        // }
-        // navigate("/shop/home");
       } else {
         toast({
           variant: "destructive",

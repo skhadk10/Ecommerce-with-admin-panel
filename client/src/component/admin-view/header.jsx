@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { AlignJustify, LogOut } from "lucide-react";
 
-const AdminHeader = () => {
+const AdminHeader = ({ setOpen }) => {
   return (
     <header className="flex items-center justify-between px-4 py-3 background border-b">
-      <Button className="lg:hidden sm-block">
+      <Button onClick={() => setOpen(true)} className="lg:hidden sm-block">
         <AlignJustify />
         <span className="sr-only">Toogle Menu</span>
       </Button>

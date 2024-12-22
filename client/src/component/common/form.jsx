@@ -10,17 +10,18 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-const CommonForm = ({
+function CommonForm({
   formControls,
   formData,
   setFormData,
   onSubmit,
   buttonText,
-}) => {
-  const renderInputsByComponentType = (getControlItem) => {
+  isBtnDisabled,
+}) {
+  function renderInputsByComponentType(getControlItem) {
     let element = null;
-
     const value = formData[getControlItem.name] || "";
+
     switch (getControlItem.componentType) {
       case "input":
         element = (
@@ -30,41 +31,46 @@ const CommonForm = ({
             id={getControlItem.name}
             type={getControlItem.type}
             value={value}
-            onChange={(e) =>
+            onChange={(event) =>
               setFormData({
                 ...formData,
-                [getControlItem.name]: e.target.value,
+                [getControlItem.name]: event.target.value,
               })
             }
           />
         );
+
         break;
       case "select":
         element = (
           <Select
-            value={value}
             onValueChange={(value) =>
               setFormData({
                 ...formData,
                 [getControlItem.name]: value,
               })
             }
+            value={value}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder={getControlItem.placeholder} />
+              <SelectValue placeholder={getControlItem.label} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-gray-100">
               {getControlItem.options && getControlItem.options.length > 0
                 ? getControlItem.options.map((optionItem) => (
-                    <SelectItem key={optionItem.id} value={optionItem.id}>
-                      {" "}
-                      {optionItem.label || optionItem.id}
+                    <SelectItem
+                      className="bg-white"
+                      key={optionItem.id}
+                      value={optionItem.id}
+                    >
+                      {optionItem.label}
                     </SelectItem>
                   ))
                 : null}
             </SelectContent>
           </Select>
         );
+
         break;
       case "textarea":
         element = (
@@ -72,37 +78,59 @@ const CommonForm = ({
             name={getControlItem.name}
             placeholder={getControlItem.placeholder}
             id={getControlItem.id}
-            type={getControlItem.type}
             value={value}
-            onChange={(e) =>
+            onChange={(event) =>
               setFormData({
                 ...formData,
-                [getControlItem.name]: e.target.value,
+                [getControlItem.name]: event.target.value,
               })
             }
-            className="w-full p-2 border rounded"
           />
         );
+
         break;
+
       default:
+        element = (
+          <Input
+            name={getControlItem.name}
+            placeholder={getControlItem.placeholder}
+            id={getControlItem.name}
+            type={getControlItem.type}
+            value={value}
+            onChange={(event) =>
+              setFormData({
+                ...formData,
+                [getControlItem.name]: event.target.value,
+              })
+            }
+          />
+        );
         break;
     }
 
     return element;
-  };
+  }
+
   return (
     <form onSubmit={onSubmit}>
       <div className="flex flex-col gap-3">
-        {formControls.map((controlItems) => (
-          <div key={controlItems.name} className="grid w-full gap-1.5">
-            <Label className="mb-1">{controlItems.label}</Label>
-            {renderInputsByComponentType(controlItems)}
+        {formControls.map((controlItem) => (
+          <div className="grid w-full gap-1.5" key={controlItem.name}>
+            <Label className="mb-1">{controlItem.label}</Label>
+            {renderInputsByComponentType(controlItem)}
           </div>
         ))}
       </div>
-      <Button className="mt-2 w-full">{buttonText || "submit"}</Button>
+      <Button
+        disabled={isBtnDisabled}
+        type="submit"
+        className="mt-2 w-full hover:bg-black  hover:text-white rounded "
+      >
+        {buttonText || "Submit"}
+      </Button>
     </form>
   );
-};
+}
 
 export default CommonForm;
