@@ -13,6 +13,7 @@ const ProductImageUpload = ({
   setUploadedImageUrl,
   imageLoadingState,
   setImageLoadingState,
+  iseditMode,
 }) => {
   const inputRef = useRef(null);
 
@@ -50,6 +51,7 @@ const ProductImageUpload = ({
       setImageLoadingState(false);
     }
   };
+  console.log(iseditMode, "mode");
 
   useEffect(() => {
     if (imageFile !== null) uploadImageToCloudinary();
@@ -61,7 +63,9 @@ const ProductImageUpload = ({
       <div
         onDragOver={handleDragOver}
         onDrop={handleDrop}
-        className="border-2 border-dashed rounded-lg p-4"
+        className={`${
+          iseditMode ? "opacity-60" : ""
+        } border-2 border-dashed rounded-lg p-4`}
       >
         <Input
           id="image-upload"
@@ -69,18 +73,21 @@ const ProductImageUpload = ({
           className="hidden"
           ref={inputRef}
           onChange={handleImageFileChange}
+          disabled={iseditMode}
         />
         {!imageFile ? (
           <Label
             htmlFor="image-upload"
-            className="flex flex-col items-center justify-center h-32 cursor-pointer"
+            className={`${
+              iseditMode ? "cursor-not-allowed" : ""
+            }flex flex-col items-center justify-center h-32 cursor-pointer`}
           >
-            {" "}
             <UploadCloudIcon className="w-10 h-10 text-muted-forground mb-2" />{" "}
             <span>Drag& Drop or click to upload images</span>
           </Label>
+        ) : imageLoadingState ? (
+          <Skeleton className="h-10 bg-gray-100" />
         ) : (
-          imageLoadingState ? <Skeleton className='h-10 bg-gray-100'/>:
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <FileIcon className="w-8 text-primary mr-2 h-8" />

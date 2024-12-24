@@ -33,6 +33,8 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+      'react/prop-types': 'off', // Turn off prop-types warnings (for JS projects)
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }], // Ignore unused vars starting with '_'
     },
   },
 ]
