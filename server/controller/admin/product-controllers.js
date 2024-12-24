@@ -77,6 +77,7 @@ const fetchProduct = async (req, res) => {
 };
 //edit a product
 const editProduct = async (req, res) => {
+  console.log(req.body,req.params,"inding params");
   try {
     const { id } = req.params;
     const {
@@ -88,8 +89,10 @@ const editProduct = async (req, res) => {
       price,
       salePrice,
       totalStock,
+      averageReview,
     } = req.body;
-    const findProduct = await Product.findById(id);
+
+    let findProduct = await Product.findById(id);
     if (!findProduct)
       return res.json({
         success: false,
@@ -121,18 +124,17 @@ const editProduct = async (req, res) => {
 //delete a product
 const deleteProduct = async (req, res) => {
   try {
-
-    const {id}=req.param;
-    const product=await Product.findByIdAndDelete(id);
+    const { id } = req.param;
+    const product = await Product.findByIdAndDelete(id);
     if (!product)
       return res.json({
         success: false,
         message: "Product cannot be found",
       });
-      res.status(200).json({
-        success: true,
-        message: "Product is deleted",
-      });
+    res.status(200).json({
+      success: true,
+      message: "Product is deleted",
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({
