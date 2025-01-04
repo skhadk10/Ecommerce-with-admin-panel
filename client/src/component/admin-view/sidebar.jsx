@@ -44,7 +44,7 @@ function MenuItems({ setOpen }) {
             navigate(menuItems.path);
             if (setOpen) setOpen(false);
           }}
-          className="flex cursor-pointer text-xl items-center gap-2 rounded-md px-3 py-2 text-muted-backgorund hover:bg-gray-200 hover:text-foreground"
+          className="flex cursor-pointer text-xl items-center gap-2 rounded-md px-3 py-2 text-muted-background hover:bg-gray-200 hover:text-foreground"
         >
           {menuItems.icon}
           <span> {menuItems.label}</span>
