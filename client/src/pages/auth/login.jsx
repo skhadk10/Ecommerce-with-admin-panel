@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import CommonForm from "../../component/common/form";
+import CommonForm from "../../components/common/form";
 import { useDispatch } from "react-redux";
 import { loginUser } from "@/store/auth-slice";
 import { useToast } from "@/hooks/use-toast";
-import { loginFormControls } from "@/component/config";
+import { loginFormControls } from "@/components/config";
 
 const initialState = {
-  email: "rickeykhd@gmail.com",
-  password: "",
+  email: "alijatamang72@gmail.com",
+  password: "123456",
 };
 const AuthLogin = () => {
   const [formData, setFormData] = useState(initialState);

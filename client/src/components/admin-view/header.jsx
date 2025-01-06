@@ -1,7 +1,13 @@
 import { Button } from "@/components/ui/button";
+import { logoutUser } from "@/store/auth-slice";
 import { AlignJustify, LogOut } from "lucide-react";
+import { useDispatch } from "react-redux";
 
 const AdminHeader = ({ setOpen }) => {
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
   return (
     <header className="flex items-center justify-between px-4 py-3 background border-b">
       <Button onClick={() => setOpen(true)} className="lg:hidden sm-block">
@@ -9,8 +15,8 @@ const AdminHeader = ({ setOpen }) => {
         <span className="sr-only">Toogle Menu</span>
       </Button>
       <div className="flex flex-1 justify-end">
-        <Button className="inline-flex gap-2 items-center rounded-md px-4 py-2 font-medium shadow">
-          <LogOut />
+        <Button onClick={handleLogout} className="inline-flex gap-2 items-center rounded-md px-4 py-2 font-medium shadow">
+          <LogOut  />
           Logout
         </Button>
       </div>
