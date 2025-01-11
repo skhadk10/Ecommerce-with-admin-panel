@@ -8,9 +8,19 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { fetchAllFilteredProducts } from "@/store/shop";
 import { ArrowUpDownIcon } from "lucide-react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import ShoppingProductTile from "./products-tile";
 
 const ShoppingListing = () => {
+  const { productList } = useSelector((state) => state.shopProduct);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchAllFilteredProducts());
+  }, [dispatch]);
+  console.log(productList, "find value");
   return (
     <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 md:p-6">
       <ProductFilter />
@@ -41,6 +51,11 @@ const ShoppingListing = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grids-cols-2 md:grid-cols-3 gap-4 p-4">
+          {productList?.map((productItem) => (
+            <ShoppingProductTile product={productItem} key={productItem.id} />
+          ))}
         </div>
       </div>
     </div>

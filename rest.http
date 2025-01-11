@@ -1,1 +1,5 @@
 POST http://localhost:5000/api/auth/logout
+
+
+###
+GEt http://localhost:5000/api/shop/products/get
