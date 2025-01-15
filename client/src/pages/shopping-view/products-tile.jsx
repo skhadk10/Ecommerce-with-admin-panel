@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import React from "react";
 
-const ShoppingProductTile = ({ product }) => {
+const ShoppingProductTile = ({ product,handleGetProductDetails }) => {
   return (
     <Card className="w-full max-w-sm mx-auto">
-      <div>
+      <div onClick={() => handleGetProductDetails(product?._id)}>
         <div className="relative">
           <img
             src={product?.image}

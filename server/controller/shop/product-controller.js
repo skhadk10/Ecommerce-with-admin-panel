@@ -3,7 +3,7 @@ const Product = require("../../models/Product");
 const getFilterProducts = async (req, res) => {
   try {
     const { category = [], brand = [], sortBy = "price-lowtohigh" } = req.query;
-console.log(req.query,"check query");
+    console.log(req.query, "check query");
     let filters = {};
 
     if (category.length) {
@@ -59,4 +59,29 @@ console.log(req.query,"check query");
   }
 };
 
-module.exports = { getFilterProducts };
+const getProductDetails = async (req, res) => {
+  try {
+    const {id} = req.params;
+    const products = await Product.findById(id);
+
+    if (!products) {
+      res.status(404).json({
+        success: false,
+        message: "Product not Found",
+      });
+    }
+
+    res.json({
+      success: true,
+      data: products,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      success: false,
+      message: "some error occured",
+    });
+  }
+};
+
+module.exports = { getFilterProducts ,getProductDetails};
