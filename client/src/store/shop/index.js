@@ -8,9 +8,13 @@ const initialState = {
 };
 export const fetchAllFilteredProducts = createAsyncThunk(
   "/products/fetchAllProducts",
-  async () => {
+  async ({ filtersParams, sortParams }) => {
+    const query = new URLSearchParams({
+      ...filtersParams,
+      sortBy: sortParams,
+    });
     const result = await axios.get(
-      " http://localhost:5000/api/shop/products/get" // Backend endpoint
+      `http://localhost:5000/api/shop/products/get?${query}` // Backend endpoint
     );
 
     return result?.data;
@@ -25,7 +29,6 @@ const ShoppingProductSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(fetchAllFilteredProducts.fulfilled, (state, action) => {
-      console.log(action.payload.success,action.payload.data,"find values mate in reducer");
       (state.isLoading = false),
         (state.productList = action.payload.success ? action.payload.data : []);
     });

@@ -36,8 +36,8 @@ export const fetchAllProduct = createAsyncThunk(
 
 export const editProduct = createAsyncThunk(
   "/products/editProduct",
-  async ({id, formData}) => {
-    console.log(id,"id check");
+  async ({ id, formData }) => {
+    console.log(id, "id check");
     const result = await axios.put(
       ` http://localhost:5000/api/admin/products/edit/${id}`, // Backend endpoint
       formData,
@@ -73,9 +73,8 @@ const AdminProductsSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchAllProduct.fulfilled, (state, action) => {
-        console.log(action.payload,"find value");
         state.isLoading = false;
-        state.productList = action.payload.data; // Correctly update the product list
+        state.productList = action.payload.data;
       })
       .addCase(fetchAllProduct.rejected, (state, action) => {
         state.isLoading = false;

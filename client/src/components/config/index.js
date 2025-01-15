@@ -133,6 +133,23 @@ export const shoppingViewHeaderMenuItems = [
   },
 ];
 
+export const categoryOptionsMap = {
+  men: "Men",
+  women: "Women",
+  kids: "Kids",
+  accessories: "Accessories",
+  footwear: "Footwear",
+};
+
+export const brandOptionsMap = {
+  nike: "Nike",
+  adidas: "Adidas",
+  puma: "Puma",
+  levi: "Levi's",
+  zara: "Zara",
+  "h&m": "H&M",
+};
+
 export const filterOptions = {
   category: [
     {
@@ -156,7 +173,7 @@ export const filterOptions = {
       label: "Footwear",
     },
   ],
-  Brand: [
+  brand: [
     {
       id: "nike",
       label: "Nike",
@@ -187,6 +204,6 @@ export const filterOptions = {
 export const sortOptions = [
   { id: "price-lowtohigh", label: "Price: Low to High" },
   { id: "price-hightolow", label: "Price: high to low" },
-  { id: "title-lowtohigh", label: "title: A to Z" },
-  { id: "title-lowtohigh", label: "title: Z to A" },
+  { id: "title-atoz", label: "title: A to Z" },
+  { id: "title-ztoa", label: "title: Z to A" },
 ];

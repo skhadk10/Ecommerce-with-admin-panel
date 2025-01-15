@@ -18,11 +18,15 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { logoutUser } from "@/store/auth-slice";
 
-const MenuItems = () => {
+const MenuItems = ({ setOpen }) => {
   return (
     <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row bg-background">
       {shoppingViewHeaderMenuItems.map((menuItems) => (
         <Link
+          onClick={() => {
+            if (setOpen) setOpen(false);
+            console.log("check data", setOpen);
+          }}
           className="text-sm font-medium"
           key={menuItems.id}
           to={menuItems.path}
@@ -81,7 +85,7 @@ const HeaderRightContent = () => {
     </div>
   );
 };
-const ShoppingHeader = () => {
+const ShoppingHeader = ({ open, setOpen }) => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   return (
@@ -91,20 +95,25 @@ const ShoppingHeader = () => {
           <HousePlug className="h-6 w-6" />
           <span className="font-bold">Ecommerce</span>
         </Link>
-        <Sheet>
+        <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
-            <Button variant="outline" size="icon" className="lg:hidden">
+            <Button
+              onClick={() => setOpen(true)}
+              variant="outline"
+              size="icon"
+              className="lg:hidden"
+            >
               <Menu className="h-6 w-6" />
               <span className="sr-only">Toogle Header Menu</span>
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-full max-w-xs bg-white">
-            <MenuItems />
-            <HeaderRightContent /> 
+            <MenuItems setOpen={setOpen} />
+            <HeaderRightContent />
           </SheetContent>
         </Sheet>
         <div className="hidden lg:block">
-          <MenuItems />
+          <MenuItems setOpen={setOpen} />
         </div>
 
         <div className="hidden lg:block">
