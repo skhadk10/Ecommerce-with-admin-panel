@@ -8,18 +8,23 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { fecthProductDetails, fetchAllFilteredProducts } from "@/store/shop";
+import {
+  fecthProductDetails,
+  fetchAllFilteredProducts,
+} from "@/store/shop/products-slice";
 import { ArrowUpDownIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ShoppingProductTile from "./products-tile";
 import { useSearchParams } from "react-router-dom";
 import ProductDetails from "./product-Details";
+import { addToCart } from "@/store/shop/cart-slice";
 
 const ShoppingListing = () => {
   const { productList, productDetails } = useSelector(
     (state) => state.shopProduct
   );
+  const { user } = useSelector((state) => state.auth);
 
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
@@ -94,6 +99,15 @@ const ShoppingListing = () => {
     return queryParams.join("&");
   };
 
+  const handleAddToCart = (getCurrentProductId) => {
+    dispatch(
+      addToCart({
+        userId: user?.id,
+        productId: getCurrentProductId,
+        quantity: 1,
+      })
+    ).then((data) => console.log(data));
+  };
   useEffect(() => {
     if (filters && Object.keys(filters).length > 0) {
       const createQuearyString = createSearchParamsHelper(filters);
@@ -117,7 +131,7 @@ const ShoppingListing = () => {
       );
     }
   }, [dispatch, sort, filters]);
-  console.log(productDetails, "find value");
+  // console.log(productDetails, "find value");
   return (
     <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 md:p-6">
       <ProductFilter handleFilter={handleFilter} filters={filters} />
@@ -163,6 +177,7 @@ const ShoppingListing = () => {
               product={productItem}
               key={productItem._id}
               handleGetProductDetails={handleGetProductDetails}
+              handleAddToCart={handleAddToCart}
             />
           ))}
         </div>
