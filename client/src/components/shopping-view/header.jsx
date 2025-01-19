@@ -18,7 +18,8 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { logoutUser } from "@/store/auth-slice";
 import UserCartWrapper from "./cart-wrapper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchCartItems } from "@/store/shop/cart-slice";
 
 const MenuItems = ({ setOpen }) => {
   return (
@@ -42,6 +43,7 @@ const MenuItems = ({ setOpen }) => {
 
 const HeaderRightContent = () => {
   const { user } = useSelector((state) => state.auth);
+  const { cartitems } = useSelector((state) => state.shopCart);
   const [openCartSheet, setOpenCartSheet] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -49,6 +51,10 @@ const HeaderRightContent = () => {
   const handleLogout = () => {
     dispatch(logoutUser());
   };
+
+  useEffect(() => {
+    dispatch(fetchCartItems(user?.id));
+  }, [dispatch]);
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
       <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
@@ -60,12 +66,15 @@ const HeaderRightContent = () => {
           <ShoppingCart className="w-6 h-6" />
           <span className="sr-only">User Cart</span>
         </Button>
-        <UserCartWrapper />
+        <UserCartWrapper
+          cartItems={
+            cartitems && cartitems.items && cartitems.items.length > 0
+              ? cartitems.items
+              : []
+          }
+        />
       </Sheet>
-      <Button variant="outline" size="icon">
-        <ShoppingCart className="w-6 h-6" />
-        <span className="sr-only">User Cart</span>
-      </Button>
+
       <DropdownMenu className="mt-4">
         <DropdownMenuTrigger asChild>
           <Avatar className="bg-black">
