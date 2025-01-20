@@ -3,10 +3,34 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/hooks/use-toast";
+import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
+import { DialogTitle } from "@radix-ui/react-dialog";
 import { StarIcon } from "lucide-react";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProductDetails = ({ open, setOpen, productDetails }) => {
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { toast } = useToast();
+  const handleAddToCart = (getCurrentProductId) => {
+    dispatch(
+      addToCart({
+        userId: user?.id,
+        productId: getCurrentProductId,
+        quantity: 1,
+      })
+    ).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(fetchCartItems(user?.id));
+
+        toast({
+          title: "Product is added to cart",
+        });
+      }
+    });
+  };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="gird grid-cols-2 gap-8 sm:p-12 max-w-[90vw] sm:max-w-[80vw] sm:max-w-[70vw] bg-white">
@@ -55,7 +79,10 @@ const ProductDetails = ({ open, setOpen, productDetails }) => {
             <span className="text-muted-foreground">(4.5)</span>
           </div>
           <div className="mt-5 mb-5">
-            <Button className="w-full bg-black text-white text-md hover:text-black">
+            <Button
+              onClick={() => handleAddToCart(productDetails._id)}
+              className="w-full bg-black text-white text-md hover:text-black"
+            >
               Add to Cart
             </Button>
           </div>{" "}
