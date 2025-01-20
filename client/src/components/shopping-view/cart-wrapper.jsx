@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import UserCartContent from "./cart-items-content";
 
 const UserCartWrapper = ({ cartItems }) => {
+  console.log(cartItems, "listofcartitems");
   return (
     <SheetContent className="sm:max-w-md bg-white">
       <SheetHeader>
@@ -12,7 +13,7 @@ const UserCartWrapper = ({ cartItems }) => {
       <div className="mt-8 space-y-4">
         {cartItems && cartItems.length > 0
           ? cartItems?.map((item) => (
-              <UserCartContent key={item.id} cartItems={item} />
+              <UserCartContent key={item} cartItems={item} />
             ))
           : null}
       </div>

@@ -28,7 +28,6 @@ const MenuItems = ({ setOpen }) => {
         <Link
           onClick={() => {
             if (setOpen) setOpen(false);
-            console.log("check data", setOpen);
           }}
           className="text-sm font-medium"
           key={menuItems.id}

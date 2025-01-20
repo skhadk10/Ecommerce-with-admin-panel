@@ -4,7 +4,7 @@ const Product = require("../../models/Product");
 const addToCart = async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
- // Validate userId, productId, and quantity
+    // Validate userId, productId, and quantity
     if (!userId || !productId || !quantity) {
       return res.status(400).json({
         success: false,
@@ -30,11 +30,11 @@ const addToCart = async (req, res) => {
     const findCurrentProductIndex = cart.items.findIndex(
       (items) => items.productId.toString() === productId
     );
- // If the product is not in the cart, add it
+    // If the product is not in the cart, add it
     if (findCurrentProductIndex === -1) {
       cart.items.push({ productId, quantity });
     } else {
-         // If the product is already in the cart, update the quantity
+      // If the product is already in the cart, update the quantity
       cart.items[findCurrentProductIndex].quantity += quantity;
     }
     await cart.save();
@@ -172,9 +172,9 @@ const deleteCartItem = async (req, res) => {
   try {
     const { userId, productId } = req.params;
     if (!userId || !productId) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
-        message: "Invalid data provided",
+        message: "Invalid data provided!",
       });
     }
 
@@ -186,13 +186,14 @@ const deleteCartItem = async (req, res) => {
     if (!cart) {
       return res.status(404).json({
         success: false,
-        message: "Cart not found",
+        message: "Cart not found!",
       });
     }
 
     cart.items = cart.items.filter(
-      (item) => item.productId.toString() !== productId
+      (item) => item.productId._id.toString() !== productId
     );
+
     await cart.save();
 
     await cart.populate({
@@ -208,6 +209,7 @@ const deleteCartItem = async (req, res) => {
       salePrice: item.productId ? item.productId.salePrice : null,
       quantity: item.quantity,
     }));
+
     res.status(200).json({
       success: true,
       data: {
@@ -215,14 +217,15 @@ const deleteCartItem = async (req, res) => {
         items: populateCartItems,
       },
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
     res.status(500).json({
       success: false,
       message: "Error",
     });
   }
 };
+
 
 module.exports = {
   addToCart,
