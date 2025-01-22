@@ -5,9 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
+import { setProductDetails } from "@/store/shop/products-slice";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { StarIcon } from "lucide-react";
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const ProductDetails = ({ open, setOpen, productDetails }) => {
@@ -31,8 +31,14 @@ const ProductDetails = ({ open, setOpen, productDetails }) => {
       }
     });
   };
+
+  function handleDialogClose() {
+    setOpen(false);
+    dispatch(setProductDetails());
+  }
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleDialogClose}>
       <DialogContent className="gird grid-cols-2 gap-8 sm:p-12 max-w-[90vw] sm:max-w-[80vw] sm:max-w-[70vw] bg-white">
         <div className="relative overflow-hidden rounded-lg">
           <img
