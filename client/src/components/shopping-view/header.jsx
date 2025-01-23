@@ -20,21 +20,39 @@ import { logoutUser } from "@/store/auth-slice";
 import UserCartWrapper from "./cart-wrapper";
 import { useEffect, useState } from "react";
 import { fetchCartItems } from "@/store/shop/cart-slice";
+import { Label } from "../ui/label";
+import { fetchAllFilteredProducts } from "@/store/shop/products-slice";
+import { set } from "react-hook-form";
 
 const MenuItems = ({ setOpen }) => {
+  const navigate = useNavigate();
+  function handleNavigate(getCurrentMenuItem) {
+    sessionStorage.removeItem("filters");
+    const currentFilter =
+      getCurrentMenuItem.id !== "home"
+        ? {
+            category: [getCurrentMenuItem.id],
+          }
+        : null;
+
+    sessionStorage.setItem("filters", JSON.stringify(currentFilter));
+
+    navigate(getCurrentMenuItem.path);
+  }
+
   return (
     <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row bg-background">
       {shoppingViewHeaderMenuItems.map((menuItems) => (
-        <Link
+        <Label
           onClick={() => {
+            handleNavigate(menuItems);
             if (setOpen) setOpen(false);
           }}
-          className="text-sm font-medium"
+          className="text-sm font-medium cursor-pointer"
           key={menuItems.id}
-          to={menuItems.path}
         >
           {menuItems.label}
-        </Link>
+        </Label>
       ))}
     </nav>
   );
@@ -108,8 +126,6 @@ const HeaderRightContent = () => {
   );
 };
 const ShoppingHeader = ({ open, setOpen }) => {
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
-
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">

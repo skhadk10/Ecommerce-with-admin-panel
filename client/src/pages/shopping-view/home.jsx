@@ -3,12 +3,17 @@ import bannerOne from "../../assets/banner-1.webp";
 import bannerTwo from "../../assets/banner-2.webp";
 import bannerThree from "../../assets/banner-3.webp";
 import {
+  Airplay,
   BabyIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   CloudLightning,
+  Heater,
+  Images,
   ShirtIcon,
+  ShoppingBasket,
   UmbrellaIcon,
+  WashingMachine,
   WatchIcon,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,6 +22,7 @@ import { use } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllFilteredProducts } from "@/store/shop/products-slice";
 import ShoppingProductTile from "./products-tile";
+import { useNavigate } from "react-router-dom";
 
 const slides = [bannerOne, bannerTwo, bannerThree];
 const categoriesWithIcon = [
@@ -26,10 +32,21 @@ const categoriesWithIcon = [
   { id: "accessories", label: "Accessories", icon: WatchIcon },
   { id: "footwear", label: "Footwear", icon: UmbrellaIcon },
 ];
+
+const brandsWithIcon = [
+  { id: "nike", label: "Nike", icon: ShirtIcon },
+  { id: "adidas", label: "Adidas", icon: WashingMachine },
+  { id: "puma", label: "Puma", icon: ShoppingBasket },
+  { id: "levi", label: "Levi's", icon: Airplay },
+  { id: "zara", label: "Zara", icon: Images },
+  { id: "h&m", label: "H&M", icon: Heater },
+];
+
 const ShoppingHome = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const { productList } = useSelector((state) => state.shopProduct);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -38,6 +55,15 @@ const ShoppingHome = () => {
 
     return () => clearInterval(timer);
   }, []);
+
+  const handleNavigateToListingPage = (getCurrentItem, section) => {
+    sessionStorage.removeItem("filters");
+    const currentFilters = {
+      [section]: [getCurrentItem.id],
+    };
+    sessionStorage.setItem("filters", JSON.stringify(currentFilters));
+    navigate("/shop/listing");
+  };
 
   useEffect(() => {
     dispatch(
@@ -92,6 +118,9 @@ const ShoppingHome = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {categoriesWithIcon.map((categoryItem) => (
               <Card
+                onClick={() =>
+                  handleNavigateToListingPage(categoryItem, "category")
+                }
                 key={categoryItem.id}
                 className="cursor-pointer hover:shadow-lg transition-shadow"
               >
@@ -106,14 +135,37 @@ const ShoppingHome = () => {
       </section>
       <section className="py-12">
         <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-8">Shop by Brand</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {brandsWithIcon.map((brandItems) => (
+              <Card
+                onClick={() => handleNavigateToListingPage(brandItems, "brand")}
+                key={brandItems.id}
+                className="cursor-pointer hover:shadow-lg transition-shadow"
+              >
+                <CardContent className="flex flex-col items-center justify-center p-6">
+                  <brandItems.icon className="w-12 h-12 mb-4 text-primary" />
+                  <span className="font-bold">{brandItems.label}</span>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="py-12">
+        <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">
             Feature Products
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {
-              productList && productList.length>0 ? productList.map((productItem) => <ShoppingProductTile key={productItem.id} product={productItem} />)  
-              :null
-            }
+            {productList && productList.length > 0
+              ? productList.map((productItem) => (
+                  <ShoppingProductTile
+                    key={productItem.id}
+                    product={productItem}
+                  />
+                ))
+              : null}
           </div>
         </div>
       </section>

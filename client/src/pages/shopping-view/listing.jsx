@@ -21,6 +21,19 @@ import ProductDetails from "./product-Details";
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 import { useToast } from "@/hooks/use-toast";
 
+const createSearchParamsHelper = (filterParams) => {
+  const queryParams = [];
+
+  for (const [key, value] of Object.entries(filterParams)) {
+    if (Array.isArray(value) && value.length > 0) {
+      const paramValue = value.join(",");
+
+      queryParams.push(`${key}=${encodeURIComponent(paramValue)}`);
+    }
+  }
+  return queryParams.join("&");
+};
+
 const ShoppingListing = () => {
   const { productList, productDetails } = useSelector(
     (state) => state.shopProduct
@@ -35,6 +48,8 @@ const ShoppingListing = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const { toast } = useToast();
+
+  const categorySearchParam = searchParams.get("category");
 
   const handleGetProductDetails = (getCurrentProductId) => {
     dispatch(fecthProductDetails(getCurrentProductId));
@@ -89,19 +104,6 @@ const ShoppingListing = () => {
     });
   };
 
-  const createSearchParamsHelper = (filterParams) => {
-    const queryParams = [];
-
-    for (const [key, value] of Object.entries(filterParams)) {
-      if (Array.isArray(value) && value.length > 0) {
-        const paramValue = value.join(",");
-
-        queryParams.push(`${key}=${encodeURIComponent(paramValue)}`);
-      }
-    }
-    return queryParams.join("&");
-  };
-
   const handleAddToCart = (getCurrentProductId) => {
     dispatch(
       addToCart({
@@ -129,7 +131,7 @@ const ShoppingListing = () => {
   useEffect(() => {
     setSort("price-lowtohigh");
     setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
-  }, []);
+  }, [categorySearchParam]);
 
   useEffect(() => {
     if (productDetails !== null) setOpenDetailsDialog(true);
