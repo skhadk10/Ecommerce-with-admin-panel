@@ -18,11 +18,16 @@ import {
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
-import { use } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllFilteredProducts } from "@/store/shop/products-slice";
+import {
+  fecthProductDetails,
+  fetchAllFilteredProducts,
+} from "@/store/shop/products-slice";
 import ShoppingProductTile from "./products-tile";
 import { useNavigate } from "react-router-dom";
+import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
+import { useToast } from "@/hooks/use-toast";
+import ProductDetails from "./product-Details";
 
 const slides = [bannerOne, bannerTwo, bannerThree];
 const categoriesWithIcon = [
@@ -44,9 +49,40 @@ const brandsWithIcon = [
 
 const ShoppingHome = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { productList } = useSelector((state) => state.shopProduct);
+  const { productList, productDetails } = useSelector(
+    (state) => state.shopProduct
+  );
+  const { user } = useSelector((state) => state.auth);
+  const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const handleGetProductDetails = (getCurrentProductId) => {
+    dispatch(fecthProductDetails(getCurrentProductId));
+  };
+
+  const handleAddToCart = (getCurrentProductId) => {
+    dispatch(
+      addToCart({
+        userId: user?.id,
+        productId: getCurrentProductId,
+        quantity: 1,
+      })
+    ).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(fetchCartItems(user?.id));
+
+        toast({
+          title: "Product is added to cart",
+        });
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (productDetails !== null) setOpenDetailsDialog(true);
+  }, [productDetails]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -163,12 +199,19 @@ const ShoppingHome = () => {
                   <ShoppingProductTile
                     key={productItem.id}
                     product={productItem}
+                    handleGetProductDetails={handleGetProductDetails}
+                    handleAddToCart={handleAddToCart}
                   />
                 ))
               : null}
           </div>
         </div>
       </section>
+      <ProductDetails
+        productDetails={productDetails}
+        open={openDetailsDialog}
+        setOpen={setOpenDetailsDialog}
+      />
     </div>
   );
 };
