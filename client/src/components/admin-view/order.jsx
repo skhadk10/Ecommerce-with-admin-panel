@@ -1,4 +1,3 @@
-import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import {
   Table,
@@ -8,12 +7,18 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
+import { Button } from "../ui/button";
+import { Dialog, DialogTrigger } from "../ui/dialog";
+import { useState } from "react";
+import AdminOrderDetailsView from "./order-details";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
-const ShoppingOrders = () => {
+const AdminOrdersView = () => {
+  const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Order History</CardTitle>
+        <CardTitle>All Order</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
@@ -35,7 +40,18 @@ const ShoppingOrders = () => {
               <TableCell>In Process</TableCell>
               <TableCell>$1000</TableCell>
               <TableCell>
-                <Button className="text-white bg-black hover:text-black">View Details</Button>
+                <Dialog
+                  open={openDetailsDialog}
+                  onOpenChange={setOpenDetailsDialog}
+                >
+                  <Button
+                    onClick={() => setOpenDetailsDialog(true)}
+                    className="text-white bg-black hover:text-black"
+                  >
+                    <DialogTitle> View Details</DialogTitle>{" "}
+                  </Button>
+                  <AdminOrderDetailsView />
+                </Dialog>
               </TableCell>
             </TableRow>
           </TableBody>
@@ -45,4 +61,4 @@ const ShoppingOrders = () => {
   );
 };
 
-export default ShoppingOrders;
+export default AdminOrdersView;

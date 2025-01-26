@@ -11,18 +11,6 @@ const UserCartContent = ({ cartItems }) => {
   const dispatch = useDispatch();
   const { toast } = useToast();
 
-  const totalCartAmount =
-    cartItems && cartItems.length > 0
-      ? cartItems.reduce(
-          (sum, currentitem) =>
-            sum +
-            (currentitem?.salePrice > 0
-              ? currentitem?.salePrice
-              : currentitem?.price) *
-              currentitem?.quantity
-        )
-      : 0;
-
   const handleItemsCartDelete = (getCartItems) => {
     dispatch(
       deleteCartItem({ userId: user?.id, productId: getCartItems?.productId })
