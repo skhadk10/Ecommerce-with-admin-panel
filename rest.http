@@ -1,5 +1,14 @@
-POST http://localhost:5000/api/auth/logout
+PUT http://localhost:5000/api/shop/address/update/6763fa79602e2140b919139f/67959d01156f53873910a814
 
+Content-Type: application/json
+
+{
+    "address": "new address",
+    "city": "new city",
+    "phone": "new country",
+    "pincode": "new postalCode",
+    "notes": "new notes",
+}
 
 ###
 GEt http://localhost:5000/api/shop/products/get
