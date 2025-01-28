@@ -4,13 +4,11 @@ import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
 import CommonForm from "../common/form";
 
-const initialFormData = {
+const initailsFormData = {
   status: "",
 };
-
-const AdminOrderDetailsView = () => {
-  const [formData, setFormData] = useState(initialFormData);
-
+const ShoppingOrderDetails = () => {
+  const [formData, setFormData] = useState(initailsFormData);
   const handleUpdateStatus = (event) => {
     event.preventDefault();
   };
@@ -87,4 +85,4 @@ const AdminOrderDetailsView = () => {
   );
 };
 
-export default AdminOrderDetailsView;
+export default ShoppingOrderDetails;
