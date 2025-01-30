@@ -1,8 +1,8 @@
-const bcrypt = require("bcryptjs");
-const User = require("../../models/User.js");
-const jwt = require("jsonwebtoken");
+import bcrypt from "bcryptjs";
+import User from "../../models/User.js";
+import jwt from "jsonwebtoken";
 
-const registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
   const { userName, email, password } = req.body;
   try {
     const checkUser = await User.findOne({ email });
@@ -75,7 +75,7 @@ const registerUser = async (req, res) => {
 // };
 
 // module.exports = registerUser;
-const loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -126,13 +126,13 @@ const loginUser = async (req, res) => {
   }
 };
 
-const logoutUser = (req, res) => {
+export const logoutUser = (req, res) => {
   res
     .clearCookie("token")
     .json({ success: true, message: "Logged out successfully" });
 };
 
-const authMiddleware = (req, res, next) => {
+export const authMiddleware = (req, res, next) => {
   const token = req.cookies.token;
   if (!token)
     return res
@@ -149,5 +149,3 @@ const authMiddleware = (req, res, next) => {
     });
   }
 };
-
-module.exports = { registerUser, loginUser, logoutUser, authMiddleware };

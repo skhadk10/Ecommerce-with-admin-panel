@@ -1,7 +1,8 @@
-const { ImageUploadUtil } = require("../../helper/cloudinary");
-const Product = require("../../models/Product");
 
-const handleImageUpload = async (req, res) => {
+import { ImageUploadUtil } from "../../helper/cloudinary.js";
+import Product from "../../models/Product.js";
+
+export const handleImageUpload = async (req, res) => {
   try {
     const b64 = Buffer.from(req.file.buffer).toString("base64");
     const url = "data:" + req.file.mimetype + ";base64," + b64; // Add missing comma for correct data URI format
@@ -22,7 +23,7 @@ const handleImageUpload = async (req, res) => {
 };
 
 // add a new product
-const addProduct = async (req, res) => {
+export const addProduct = async (req, res) => {
   try {
     const {
       image,
@@ -60,7 +61,7 @@ const addProduct = async (req, res) => {
   }
 };
 // fetch all product
-const fetchProduct = async (req, res) => {
+export const fetchProduct = async (req, res) => {
   try {
     const listOfProduct = await Product.find({});
     res.json({
@@ -76,8 +77,8 @@ const fetchProduct = async (req, res) => {
   }
 };
 //edit a product
-const editProduct = async (req, res) => {
-  console.log(req.body,req.params,"inding params");
+export const editProduct = async (req, res) => {
+  console.log(req.body, req.params, "inding params");
   try {
     const { id } = req.params;
     const {
@@ -122,7 +123,7 @@ const editProduct = async (req, res) => {
   }
 };
 //delete a product
-const deleteProduct = async (req, res) => {
+export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.param;
     const product = await Product.findByIdAndDelete(id);
@@ -142,11 +143,4 @@ const deleteProduct = async (req, res) => {
       message: "Error occurred during add product upload",
     });
   }
-};
-module.exports = {
-  handleImageUpload,
-  addProduct,
-  fetchProduct,
-  editProduct,
-  deleteProduct,
 };

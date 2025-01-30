@@ -6,6 +6,29 @@ import { Button } from "@/components/ui/button";
 
 const ShoppingCheckout = () => {
   const { cartitems } = useSelector((state) => state.shopCart);
+  const { user } = useSelector((state) => state.auth);
+
+  const handleInitialPaypalPayment = () => {
+    // const oprderData = {
+    //   userId: user?.id,
+    //   cartItems: cartitems.items.map((singlCartItem) => ({
+    //     productId: singlCartItem?.productId,
+    //     title: singlCartItem?.title,
+    //     image: singlCartItem?.image,
+    //     price: singlCartItem?.price,
+    //     quantity: singlCartItem?.quantity,
+    //   })),
+    //   addressInfo,
+    //   orderStatus,
+    //   paymentMethod,
+    //   paymentStatus,
+    //   totalAmount,
+    //   orderDate,
+    //   orderUpdateDate,
+    //   paymentId,
+    //   payerId,
+    // };
+  };
 
   const totalCartAmount =
     cartitems && cartitems?.items && cartitems?.items.length > 0
@@ -19,7 +42,8 @@ const ShoppingCheckout = () => {
           0
         )
       : 0;
-  console.log(cartitems.items, "cartitems");
+
+      console.log(cartitems,"ca");
   return (
     <div className="flex flex-col">
       <div className="relative h-[300px] w-full overflow-hidden">
@@ -42,7 +66,10 @@ const ShoppingCheckout = () => {
             </div>
           </div>
           <div className="mt-4 w-full text-2xl">
-            <Button className="w-full hover:bg-black hover:text-white">
+            <Button
+              onClick={handleInitialPaypalPayment}
+              className="w-full hover:bg-black hover:text-white"
+            >
               Checkout with Paypal
             </Button>
           </div>

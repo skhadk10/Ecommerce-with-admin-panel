@@ -1,6 +1,6 @@
-const Address = require("../../models/Address");
+import Address from "../../models/Address.js";
 
-const addAddress = async (req, res) => {
+export const addAddress = async (req, res) => {
   try {
     const { userId, address, phone, city, pincode, notes } = req.body;
 
@@ -28,7 +28,7 @@ const addAddress = async (req, res) => {
       .json({ success: false, message: "Internal Server Error" });
   }
 };
-const fetchAllAddress = async (req, res) => {
+export const fetchAllAddress = async (req, res) => {
   try {
     const { userId } = req.params;
     if (!userId) {
@@ -49,7 +49,7 @@ const fetchAllAddress = async (req, res) => {
       .json({ success: false, message: "Internal Server Error" });
   }
 };
-const editAddress = async (req, res) => {
+export const editAddress = async (req, res) => {
   try {
     const { userId, addressId } = req.params;
     const { formData } = req.body;
@@ -82,7 +82,7 @@ const editAddress = async (req, res) => {
       .json({ success: false, message: "Internal Server Error" });
   }
 };
-const deleteAddress = async (req, res) => {
+export const deleteAddress = async (req, res) => {
   try {
     const { userId, addressId } = req.params;
 
@@ -114,9 +114,4 @@ const deleteAddress = async (req, res) => {
   }
 };
 
-module.exports = {
-  addAddress,
-  fetchAllAddress,
-  editAddress,
-  deleteAddress,
-};
+

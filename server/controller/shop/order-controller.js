@@ -69,12 +69,11 @@
 
 // module.exports = { createOrder };
 
-const got = require("got");
-const mongoose = require("mongoose");
-const { getAccessToken } = require("../../helper/paypal");
-const Order = require("../../models/Order"); // Ensure the correct path
+import got from "got";
+import { getAccessToken } from "../../helper/paypal.js";
+import Order from "../../models/Order.js";
 
-const createOrder = async (req, res) => {
+export const createOrder = async (req, res) => {
   try {
     const {
       userId,
@@ -180,7 +179,7 @@ const createOrder = async (req, res) => {
       totalAmount,
       orderDate: orderDate || new Date(),
       orderUpdateDate: orderUpdateDate || new Date(),
-      paymentId: paypalOrder.id, // Save PayPal Order ID
+      paymentId: paymentId, //paypalOrder.id, // Save PayPal Order ID
       payerId: payerId || null,
     });
 
@@ -190,20 +189,28 @@ const createOrder = async (req, res) => {
     const approveURL = paypalOrder.links.find(
       (link) => link.rel === "approve"
     )?.href;
-    res.json({
+    res.status(200).json({
       success: true,
       message: "PayPal order created and saved in MongoDB",
       approveURL,
-      order: paypalOrder,
+      orderId: paypalOrder._id,
     });
   } catch (error) {
     console.error("Error in PayPal Integration:", error);
     res.status(500).json({
       success: false,
       message: "Error processing PayPal payment and saving order",
-      error: error.message,
     });
   }
 };
 
-module.exports = { createOrder };
+export const capturePayment = async (req, res) => {
+  try {
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Error processing PayPal payment and saving order",
+    });
+  }
+};

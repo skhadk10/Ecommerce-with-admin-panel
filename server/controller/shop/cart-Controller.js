@@ -1,7 +1,7 @@
-const Cart = require("../../models/Cart");
-const Product = require("../../models/Product");
+import Cart from "../../models/Cart.js";
+import Product from "../../models/Product.js";
 
-const addToCart = async (req, res) => {
+export const addToCart = async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
     // Validate userId, productId, and quantity
@@ -51,7 +51,7 @@ const addToCart = async (req, res) => {
     });
   }
 };
-const fetchCartItems = async (req, res) => {
+export const fetchCartItems = async (req, res) => {
   try {
     const { userId } = req.params;
     console.log(userId, "cehck");
@@ -107,7 +107,7 @@ const fetchCartItems = async (req, res) => {
     });
   }
 };
-const updateCartItemQty = async (req, res) => {
+export const updateCartItemQty = async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
 
@@ -168,7 +168,7 @@ const updateCartItemQty = async (req, res) => {
     });
   }
 };
-const deleteCartItem = async (req, res) => {
+export const deleteCartItem = async (req, res) => {
   try {
     const { userId, productId } = req.params;
     if (!userId || !productId) {
@@ -224,12 +224,4 @@ const deleteCartItem = async (req, res) => {
       message: "Error",
     });
   }
-};
-
-
-module.exports = {
-  addToCart,
-  fetchCartItems,
-  updateCartItemQty,
-  deleteCartItem,
 };
