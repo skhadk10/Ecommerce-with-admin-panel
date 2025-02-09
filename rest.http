@@ -12,3 +12,38 @@ Content-Type: application/json
 
 ###
 GEt http://localhost:5000/api/shop/products/get
+
+
+
+###
+POST http://localhost:5000/api/shop/order/create
+Content-Type: application/json
+
+{
+  "userId": "64f1b2c8e4b0f5a9c8f1b2c8",
+  "cartItems": [
+    {
+      "productId": "64f1b2c8e4b0f5a9c8f1b2c9",
+      "title": "Sample Product",
+      "image": "https://example.com/image.jpg",
+      "salePrice": "19.99",
+      "quantity": 2
+    }
+  ],
+  "addressInfo": {
+    "addressId": "64f1b2c8e4b0f5a9c8f1b2ca",
+    "address": "123 Main St",
+    "city": "New York",
+    "pincode": "10001",
+    "phone": "1234567890",
+    "notes": "Leave at the door"
+  },
+  "orderStatus": "Pending",
+  "paymentMethod": "PayPal",
+  "paymentStatus": "Pending",
+  "totalAmount": 39.98,
+  "orderDate": "2023-10-01T00:00:00.000Z",
+  "orderUpdateDate": "2023-10-01T00:00:00.000Z",
+  "paymentId": "PAYID-123456789",
+  "payerId": "PAYERID-123456789"
+}

@@ -3,31 +3,36 @@ import Img from "../../assets/account.jpg";
 import { useSelector } from "react-redux";
 import UserCartContent from "@/components/shopping-view/cart-items-content";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const ShoppingCheckout = () => {
   const { cartitems } = useSelector((state) => state.shopCart);
   const { user } = useSelector((state) => state.auth);
+  const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
 
   const handleInitialPaypalPayment = () => {
-    // const oprderData = {
-    //   userId: user?.id,
-    //   cartItems: cartitems.items.map((singlCartItem) => ({
-    //     productId: singlCartItem?.productId,
-    //     title: singlCartItem?.title,
-    //     image: singlCartItem?.image,
-    //     price: singlCartItem?.price,
-    //     quantity: singlCartItem?.quantity,
-    //   })),
-    //   addressInfo,
-    //   orderStatus,
-    //   paymentMethod,
-    //   paymentStatus,
-    //   totalAmount,
-    //   orderDate,
-    //   orderUpdateDate,
-    //   paymentId,
-    //   payerId,
-    // };
+    const oprderData = {
+      userId: user?.id,
+      cartItems: cartitems.items.map((singlCartItem) => ({
+        productId: singlCartItem?.productId,
+        title: singlCartItem?.title,
+        image: singlCartItem?.image,
+        price:
+          singlCartItem?.salePrice > 0
+            ? singlCartItem?.salePrice
+            : singlCartItem?.price,
+        quantity: singlCartItem?.quantity,
+      })),
+      addressInfo,
+      orderStatus: "pending",
+      paymentMethod: "paypal",
+      paymentStatus: "pending",
+      totalAmount: totalCartAmount,
+      orderDate: new Date(),
+      orderUpdateDate: new Date(),
+      paymentId: "",
+      payerId: "",
+    };
   };
 
   const totalCartAmount =
@@ -43,14 +48,15 @@ const ShoppingCheckout = () => {
         )
       : 0;
 
-      console.log(cartitems,"ca");
+  console.log(currentSelectedAddress, "checkin address");
+
   return (
     <div className="flex flex-col">
       <div className="relative h-[300px] w-full overflow-hidden">
         <img src={Img} className="h-full w-full object-cover object-center" />
       </div>
       <div className="grid gird-cols-1 sm:grid-cols-2 gap-5 mt-5 p-5 ">
-        <Address />
+        <Address setCurrentSelectedAddress={setCurrentSelectedAddress} />
         <div className="flex flex-col gap-4">
           {cartitems && cartitems.items && cartitems.items.length > 0 ? (
             cartitems?.items.map((item) => (

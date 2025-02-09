@@ -38,15 +38,27 @@ const UserCartWrapper = ({ cartItems, setOpenCartSheet }) => {
           <span className="font-bold">${totalCartAmount}</span>
         </div>
       </div>
-      <Button
-        onClick={() => {
-          navigate("/shop/checkout");
-          setOpenCartSheet(false);
-        }}
-        className="w-full mt-6 bg-black text-white"
-      >
-        CheckOut
-      </Button>
+      {totalCartAmount !== 0 ? (
+        <Button
+          onClick={() => {
+            navigate("/shop/checkout");
+            setOpenCartSheet(false);
+          }}
+          className="w-full mt-6 bg-black text-white"
+        >
+          CheckOut
+        </Button>
+      ) : (
+        <Button
+          onClick={() => {
+            navigate("/shop/listing");
+            setOpenCartSheet(false);
+          }}
+          className="w-full mt-6 bg-black text-white"
+        >
+          Go to Shopping
+        </Button>
+      )}
     </SheetContent>
   );
 };
