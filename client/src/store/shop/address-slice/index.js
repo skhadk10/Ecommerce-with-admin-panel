@@ -28,7 +28,6 @@ export const fetchAllAddress = createAsyncThunk(
 export const editAddress = createAsyncThunk(
   "address/editAddress",
   async ({ userId, addressId, formData }) => {
-    console.log(userId, addressId, formData, "edit address");
     const response = await axios.put(
       `http://localhost:5000/api/shop/address/update/${userId}/${addressId}`,
       { formData }
@@ -39,7 +38,6 @@ export const editAddress = createAsyncThunk(
 export const deleteAddress = createAsyncThunk(
   "address/deleteAddress",
   async ({ userId, addressId }) => {
-    console.log(userId, addressId, "delete address");
     const response = await axios.delete(
       `http://localhost:5000/api/shop/address/delete/${userId}/${addressId}`
     );

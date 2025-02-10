@@ -20,11 +20,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { checkAuth } from "./store/auth-slice/index.js";
 
-import { Skeleton } from "@/components/ui/skeleton"
-
+import { Skeleton } from "@/components/ui/skeleton";
+import PaypalReturnPage from "./pages/shopping-view/paypal-return.jsx";
 
 function App() {
-  const { user, isAuthenticated ,isLoading} = useSelector((state) => state.auth);
+  const { user, isAuthenticated, isLoading } = useSelector(
+    (state) => state.auth
+  );
 
   const dispatch = useDispatch();
 
@@ -34,7 +36,7 @@ function App() {
 
   // console.log(isLoading,user);
 
-  if(isLoading) return <Skeleton className="w-[800px] bg-black h-[600px]" />
+  if (isLoading) return <Skeleton className="w-[800px] bg-black h-[600px]" />;
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
@@ -75,6 +77,7 @@ function App() {
           <Route path="listing" element={<ShoppingListing />} />
           <Route path="checkout" element={<ShoppingCheckout />} />
           <Route path="account" element={<ShoppingAccount />} />
+          <Route path="paypal-return" element={<PaypalReturnPage />} />
         </Route>
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />

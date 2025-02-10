@@ -1,29 +1,42 @@
 import Address from "@/components/shopping-view/address";
 import Img from "../../assets/account.jpg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UserCartContent from "@/components/shopping-view/cart-items-content";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { CreateNewOrder } from "@/store/shop/order-slice";
 
 const ShoppingCheckout = () => {
   const { cartitems } = useSelector((state) => state.shopCart);
   const { user } = useSelector((state) => state.auth);
+  const { approvalURL } = useSelector((state) => state.shopOrder);
+
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
+  const [isPaymentStart, setIsPaymentStart] = useState(false);
+
+  const dispatch = useDispatch();
 
   const handleInitialPaypalPayment = () => {
-    const oprderData = {
+    const orderData = {
       userId: user?.id,
       cartItems: cartitems.items.map((singlCartItem) => ({
         productId: singlCartItem?.productId,
         title: singlCartItem?.title,
         image: singlCartItem?.image,
-        price:
+        salePrice:
           singlCartItem?.salePrice > 0
             ? singlCartItem?.salePrice
             : singlCartItem?.price,
         quantity: singlCartItem?.quantity,
       })),
-      addressInfo,
+      addressInfo: {
+        addressId: currentSelectedAddress?._id,
+        address: currentSelectedAddress?.address,
+        city: currentSelectedAddress?.city,
+        pincode: currentSelectedAddress?.pincode,
+        phone: currentSelectedAddress?.phone,
+        notes: currentSelectedAddress?.notes,
+      },
       orderStatus: "pending",
       paymentMethod: "paypal",
       paymentStatus: "pending",
@@ -33,7 +46,19 @@ const ShoppingCheckout = () => {
       paymentId: "",
       payerId: "",
     };
+    dispatch(CreateNewOrder(orderData)).then((data) => {
+      if (data?.payload?.success) {
+        setIsPaymentStart(true);
+        setCurrentSelectedAddress(null);
+      } else {
+        setIsPaymentStart(false);
+      }
+    });
   };
+  if (approvalURL) {
+    window.location.href = approvalURL;
+  }
+  console.log(approvalURL,"url");
 
   const totalCartAmount =
     cartitems && cartitems?.items && cartitems?.items.length > 0
@@ -60,7 +85,7 @@ const ShoppingCheckout = () => {
         <div className="flex flex-col gap-4">
           {cartitems && cartitems.items && cartitems.items.length > 0 ? (
             cartitems?.items.map((item) => (
-              <UserCartContent key={item.id} cartItems={item} />
+              <UserCartContent key={item.productId} cartItems={item} />
             ))
           ) : (
             <h1>No items in cart</h1>

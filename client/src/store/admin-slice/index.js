@@ -37,7 +37,6 @@ export const fetchAllProduct = createAsyncThunk(
 export const editProduct = createAsyncThunk(
   "/products/editProduct",
   async ({ id, formData }) => {
-    console.log(id, "id check");
     const result = await axios.put(
       ` http://localhost:5000/api/admin/products/edit/${id}`, // Backend endpoint
       formData,
@@ -47,7 +46,7 @@ export const editProduct = createAsyncThunk(
         },
       }
     );
-    // console.log(result.data, "checking value");
+
     return result?.data;
   }
 );

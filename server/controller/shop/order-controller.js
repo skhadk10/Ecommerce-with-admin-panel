@@ -19,6 +19,7 @@ export const createOrder = async (req, res) => {
       payerId,
     } = req.body;
 
+   
     // Get PayPal access token
     const access_token = await getAccessToken();
 
@@ -83,13 +84,14 @@ export const createOrder = async (req, res) => {
     await newOrder.save();
 
     // Extract the approval URL
-    const approveURL = paypalOrder.links.find(
+    const approvalURL = paypalOrder.links.find(
       (link) => link.rel === "approve"
     )?.href;
+    
     res.status(200).json({
       success: true,
       message: "PayPal order created and saved in MongoDB",
-      approveURL,
+      approvalURL,
       orderId: paypalOrder._id,
     });
   } catch (error) {

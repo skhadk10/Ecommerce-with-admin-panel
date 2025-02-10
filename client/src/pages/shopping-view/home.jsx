@@ -102,6 +102,7 @@ const ShoppingHome = () => {
   };
 
   useEffect(() => {
+    
     dispatch(
       fetchAllFilteredProducts({
         filtersParams: {},
@@ -197,7 +198,7 @@ const ShoppingHome = () => {
             {productList && productList.length > 0
               ? productList.map((productItem) => (
                   <ShoppingProductTile
-                    key={productItem.id}
+                    key={productItem._id}
                     product={productItem}
                     handleGetProductDetails={handleGetProductDetails}
                     handleAddToCart={handleAddToCart}

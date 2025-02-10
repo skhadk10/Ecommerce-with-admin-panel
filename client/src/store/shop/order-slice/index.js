@@ -12,6 +12,7 @@ export const CreateNewOrder = createAsyncThunk(
   "order/createNewOrder",
 
   async (orderData) => {
+    console.log(orderData,"check");
     const response = await axios.post(
       `http://localhost:5000/api/shop/order/create`,
       orderData
