@@ -19,6 +19,7 @@ const ShoppingCheckout = () => {
   const handleInitialPaypalPayment = () => {
     const orderData = {
       userId: user?.id,
+      cartId: cartitems?._id,
       cartItems: cartitems.items.map((singlCartItem) => ({
         productId: singlCartItem?.productId,
         title: singlCartItem?.title,
@@ -58,7 +59,7 @@ const ShoppingCheckout = () => {
   if (approvalURL) {
     window.location.href = approvalURL;
   }
-  console.log(approvalURL,"url");
+  console.log(approvalURL, "url");
 
   const totalCartAmount =
     cartitems && cartitems?.items && cartitems?.items.length > 0

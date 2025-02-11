@@ -9,20 +9,27 @@ export const getAccessToken = async () => {
   const auth = Buffer.from(`${clientId}:${secret}`).toString("base64");
 
   try {
-    const response = await got.post(`${process.env.PAYPAL_BASEURL}/v1/oauth2/token`, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: `Basic ${auth}`,
-      },
-      form: {
-        grant_type: "client_credentials",
-      },
-      responseType: "json",
-    });
+    const response = await got.post(
+      `${process.env.PAYPAL_BASEURL}/v1/oauth2/token`,
+      // "grant_type:client_credentials",
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Basic ${auth}`,
+        },
+        form: {
+          grant_type: "client_credentials",
+        },
+        responseType: "json",
+      }
+    );
 
     return response.body.access_token;
   } catch (error) {
-    console.error("Error fetching PayPal access token:", error.response ? error.response.body : error.message);
+    console.error(
+      "Error fetching PayPal access token:",
+      error.response ? error.response.body : error.message
+    );
     throw new Error("Failed to retrieve PayPal access token");
   }
 };

@@ -12,7 +12,7 @@ export const CreateNewOrder = createAsyncThunk(
   "order/createNewOrder",
 
   async (orderData) => {
-    console.log(orderData,"check");
+    console.log(orderData, "check");
     const response = await axios.post(
       `http://localhost:5000/api/shop/order/create`,
       orderData
@@ -69,6 +69,10 @@ const shoppingOrderSlice = createSlice({
         state.isLoading = false;
         state.approvalURL = action.payload.approvalURL;
         state.orderId = action.payload.orderId;
+        sessionStorage.setItem(
+          "currentOrderId",
+          JSON.stringify(action.payload.OrderId)
+        );
       })
       .addCase(CreateNewOrder.rejected, (state) => {
         state.isLoading = false;

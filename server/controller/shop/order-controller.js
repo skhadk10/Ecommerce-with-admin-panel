@@ -1,12 +1,13 @@
-
 import got from "got";
 import { getAccessToken } from "../../helper/paypal.js";
 import Order from "../../models/Order.js";
+import Cart from "../../models/Cart.js";
 
 export const createOrder = async (req, res) => {
   try {
     const {
       userId,
+      cartId,
       cartItems,
       addressInfo,
       orderStatus,
@@ -19,7 +20,6 @@ export const createOrder = async (req, res) => {
       payerId,
     } = req.body;
 
-   
     // Get PayPal access token
     const access_token = await getAccessToken();
 
@@ -49,9 +49,11 @@ export const createOrder = async (req, res) => {
                 sku: item.productId,
                 unit_amount: {
                   currency_code: "USD",
-                  value: parseFloat(item.salePrice).toFixed(2),
+                  // value: parseFloat(item.salePrice).toFixed(2),
+                  value: item.salePrice.toFixed(2),
                 },
-                quantity: item.quantity,
+                // quantity: item.quantity,
+                quantity: item.quantity.toString(),
               })),
             },
           ],
@@ -69,6 +71,7 @@ export const createOrder = async (req, res) => {
     // Save order in MongoDB
     const newOrder = new Order({
       userId,
+      cartId,
       cartItems,
       addressInfo,
       orderStatus: orderStatus || "Pending",
@@ -87,7 +90,7 @@ export const createOrder = async (req, res) => {
     const approvalURL = paypalOrder.links.find(
       (link) => link.rel === "approve"
     )?.href;
-    
+
     res.status(200).json({
       success: true,
       message: "PayPal order created and saved in MongoDB",
@@ -105,6 +108,31 @@ export const createOrder = async (req, res) => {
 
 export const capturePayment = async (req, res) => {
   try {
+    const { paymentId, payerId, orderId } = req.body;
+    let order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order can not be found",
+      });
+    }
+
+    order.paymentStatus = "paid";
+    order.orderStatus = "confirmed";
+    order.paymentId = paymentId;
+    order.payerId = payerId;
+
+    const getCartId = order.cartId;
+    const cart = await Cart.findByIdAndDelete(getCartId);
+
+    await order.save();
+
+    res.status(200).json({
+      success: true,
+      message: "order confirmed",
+      data: order,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
