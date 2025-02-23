@@ -23,7 +23,7 @@ export const getAccessToken = async () => {
         responseType: "json",
       }
     );
-
+console.log(response.body.access_token,"check data");
     return response.body.access_token;
   } catch (error) {
     console.error(

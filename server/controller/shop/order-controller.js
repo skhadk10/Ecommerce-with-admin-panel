@@ -49,8 +49,8 @@ export const createOrder = async (req, res) => {
                 sku: item.productId,
                 unit_amount: {
                   currency_code: "USD",
-                  // value: parseFloat(item.salePrice).toFixed(2),
-                  value: item.salePrice.toFixed(2),
+                  value: parseFloat(item.salePrice).toFixed(2),
+                  // value: item.salePrice.toFixed(2),
                 },
                 // quantity: item.quantity,
                 quantity: item.quantity.toString(),
@@ -124,7 +124,7 @@ export const capturePayment = async (req, res) => {
     order.payerId = payerId;
 
     const getCartId = order.cartId;
-    const cart = await Cart.findByIdAndDelete(getCartId);
+    await Cart.findByIdAndDelete(getCartId);
 
     await order.save();
 

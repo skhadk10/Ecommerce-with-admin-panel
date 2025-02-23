@@ -20,6 +20,19 @@ export const CreateNewOrder = createAsyncThunk(
     return response.data;
   }
 );
+
+export const capturePayment = createAsyncThunk(
+  "order/capturePayment",
+
+  async ({ paymentId, payerId, orderId }) => {
+    const response = await axios.post(
+      `http://localhost:5000/api/shop/order/create`,
+      { paymentId, payerId, orderId }
+    );
+    return response.data;
+  }
+);
+
 export const fetchCartItems = createAsyncThunk(
   "cart/fetchCartItems",
 
