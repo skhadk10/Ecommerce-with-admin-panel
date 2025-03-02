@@ -6,6 +6,8 @@ const initialState = {
   approvalURL: null,
   isLoading: false,
   orderId: null,
+  orderList: [],
+  orderDetails: null,
 };
 
 export const CreateNewOrder = createAsyncThunk(
@@ -33,42 +35,27 @@ export const capturePayment = createAsyncThunk(
   }
 );
 
-export const fetchCartItems = createAsyncThunk(
-  "cart/fetchCartItems",
+export const getAllOrdersByUser = createAsyncThunk(
+  "order/getAllOrdersByUser",
 
   async (userId) => {
     const response = await axios.get(
-      `http://localhost:5000/api/shop/cart/get/${userId}`
+      `http://localhost:5000/api/shop/order/list/${userId}`
     );
     return response.data;
   }
 );
-export const deleteCartItem = createAsyncThunk(
-  "cart/deleteCartItem",
+export const getOrdersDetails = createAsyncThunk(
+  "order/getOrdersDetails",
 
-  async ({ userId, productId }) => {
-    const response = await axios.delete(
-      `http://localhost:5000/api/shop/cart/${userId}/${productId}`
+  async (id) => {
+    const response = await axios.get(
+      `http://localhost:5000/api/shop/order/details/${id}`
     );
     return response.data;
   }
 );
 
-export const updateCartItemQty = createAsyncThunk(
-  "cart/updateCartItemQty",
-
-  async ({ userId, productId, quantity }) => {
-    const response = await axios.put(
-      `http://localhost:5000/api/shop/cart/update-cart`,
-      {
-        userId,
-        productId,
-        quantity,
-      }
-    );
-    return response.data;
-  }
-);
 const shoppingOrderSlice = createSlice({
   name: "shoppingOrderSlice",
   initialState,
@@ -92,6 +79,28 @@ const shoppingOrderSlice = createSlice({
         state.isLoading = false;
         state.approvalURL = null;
         state.orderId = null;
+      })
+      .addCase(getAllOrdersByUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllOrdersByUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.orderList = action.payload.data;
+      })
+      .addCase(getAllOrdersByUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.orderList = [];
+      })
+      .addCase(getOrdersDetails.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getOrdersDetails.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.orderDetails = action.payload.data;
+      })
+      .addCase(getOrdersDetails.rejected, (state, action) => {
+        state.isLoading = false;
+        state.orderDetails = null;
       });
   },
 });

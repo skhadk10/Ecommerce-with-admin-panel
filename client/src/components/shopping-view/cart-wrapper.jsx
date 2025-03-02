@@ -38,7 +38,7 @@ const UserCartWrapper = ({ cartItems, setOpenCartSheet }) => {
           <span className="font-bold">${totalCartAmount}</span>
         </div>
       </div>
-      {totalCartAmount !== 0 ? (
+      {/* {totalCartAmount !== 0 ? ( */}
         <Button
           onClick={() => {
             navigate("/shop/checkout");
@@ -48,7 +48,7 @@ const UserCartWrapper = ({ cartItems, setOpenCartSheet }) => {
         >
           CheckOut
         </Button>
-      ) : (
+      {/* ) : (
         <Button
           onClick={() => {
             navigate("/shop/listing");
@@ -58,7 +58,7 @@ const UserCartWrapper = ({ cartItems, setOpenCartSheet }) => {
         >
           Go to Shopping
         </Button>
-      )}
+      )} */}
     </SheetContent>
   );
 };

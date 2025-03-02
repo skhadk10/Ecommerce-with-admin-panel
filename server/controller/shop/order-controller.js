@@ -139,3 +139,51 @@ export const capturePayment = async (req, res) => {
     });
   }
 };
+
+export const getAllOrdersByUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const orders = await Order.find({
+      userId,
+    });
+    if (!orders.length) {
+      return res.status(404).json({
+        success: false,
+        message: "No orders found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "All orders fetched",
+      data: orders,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching orders",
+    });
+  }
+};
+export const getOrdersDetails = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const order = await Order.findById(id);
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "order not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      data: order,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching orders",
+    });
+  }
+};
