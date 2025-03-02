@@ -67,7 +67,6 @@ export const createOrder = async (req, res) => {
     );
 
     const paypalOrder = response.body;
-
     // Save order in MongoDB
     const newOrder = new Order({
       userId,
@@ -80,7 +79,7 @@ export const createOrder = async (req, res) => {
       totalAmount,
       orderDate: orderDate || new Date(),
       orderUpdateDate: orderUpdateDate || new Date(),
-      paymentId: paymentId, //paypalOrder.id, // Save PayPal Order ID
+      paymentId: paypalOrder.id, // Save PayPal Order ID
       payerId: payerId || null,
     });
 
@@ -90,12 +89,11 @@ export const createOrder = async (req, res) => {
     const approvalURL = paypalOrder.links.find(
       (link) => link.rel === "approve"
     )?.href;
-
     res.status(200).json({
       success: true,
       message: "PayPal order created and saved in MongoDB",
       approvalURL,
-      orderId: paypalOrder._id,
+      orderId: newOrder._id,
     });
   } catch (error) {
     console.error("Error in PayPal Integration:", error);

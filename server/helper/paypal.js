@@ -7,7 +7,6 @@ export const getAccessToken = async () => {
 
   // Encode clientId and secret in Base64
   const auth = Buffer.from(`${clientId}:${secret}`).toString("base64");
-
   try {
     const response = await got.post(
       `${process.env.PAYPAL_BASEURL}/v1/oauth2/token`,
@@ -15,7 +14,7 @@ export const getAccessToken = async () => {
       {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: `Basic ${auth}`,
+          "Authorization": `Basic ${auth}`,
         },
         form: {
           grant_type: "client_credentials",
@@ -23,7 +22,7 @@ export const getAccessToken = async () => {
         responseType: "json",
       }
     );
-console.log(response.body.access_token,"check data");
+
     return response.body.access_token;
   } catch (error) {
     console.error(
