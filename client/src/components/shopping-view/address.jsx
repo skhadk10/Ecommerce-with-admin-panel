@@ -12,6 +12,7 @@ import {
 } from "@/store/shop/address-slice";
 import { useToast } from "@/hooks/use-toast";
 import { set } from "react-hook-form";
+import { Button } from "../ui/button";
 const initialAddressFormData = {
   address: "",
   city: "",
@@ -134,6 +135,16 @@ const Address = ({ setCurrentSelectedAddress }) => {
           onSubmit={handleManageAddress}
           isBtnDisabled={!isFormValid()}
         />
+        {currentEditedId !== null ? (
+          <Button
+            onClick={() => {
+              setCurrentEditedId(null);
+              setFormData(initialAddressFormData);
+            }}
+          >
+            Cancel
+          </Button>
+        ) : null}
       </CardContent>
     </Card>
   );

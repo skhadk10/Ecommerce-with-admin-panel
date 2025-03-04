@@ -102,7 +102,6 @@ const ShoppingHome = () => {
   };
 
   useEffect(() => {
-    
     dispatch(
       fetchAllFilteredProducts({
         filtersParams: {},
@@ -111,7 +110,6 @@ const ShoppingHome = () => {
     );
   }, [dispatch]);
 
-  console.log(productList, "productLists");
   return (
     <div className="flex flex-col min-h-screen">
       <div className="relative w-full h-[600px] overflow-hidden">
