@@ -8,8 +8,6 @@ const initialState = {
   orderDetails: null,
 };
 
-
-
 export const getAllOrdersForAdmin = createAsyncThunk(
   "orders/getAllOrdersForAdmin",
 
@@ -30,6 +28,19 @@ export const getOrdersDetailsForAdmin = createAsyncThunk(
     return response.data;
   }
 );
+export const updateOrderStatus = createAsyncThunk(
+  "orders/updateOrderStatus",
+
+  async ({ id, orderStatus }) => {
+    const response = await axios.put(
+      `http://localhost:5000/api/admin/orders/update/${id}`,
+      {
+        orderStatus,
+      }
+    );
+    return response.data;
+  }
+);
 
 const AdminOrderSlice = createSlice({
   name: "AdminOrderSlice",
@@ -41,7 +52,7 @@ const AdminOrderSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-   
+
       .addCase(getAllOrdersForAdmin.pending, (state) => {
         state.isLoading = true;
       })

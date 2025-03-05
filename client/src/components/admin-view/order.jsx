@@ -39,7 +39,7 @@ const AdminOrdersView = () => {
     dispatch(getAllOrdersForAdmin());
   }, [dispatch]);
 
-  console.log(orderDetails,"orderdetails");
+  console.log(orderDetails, "orderdetails");
   return (
     <Card>
       <CardHeader>
@@ -69,6 +69,8 @@ const AdminOrdersView = () => {
                         className={`py-1 px-3 ${
                           orderItem?.orderStatus === "confirmed"
                             ? "bg-green-500"
+                            : orderItem?.orderStatus === "rejected"
+                            ? "bg-red-500"
                             : "bg-black-500"
                         }`}
                       >

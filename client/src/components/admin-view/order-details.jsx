@@ -3,50 +3,87 @@ import { DialogContent } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
 import CommonForm from "../common/form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllOrdersForAdmin,
+  getOrdersDetailsForAdmin,
+  updateOrderStatus,
+} from "@/store/admin-order-slice";
+import { Badge } from "../ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 const initialFormData = {
   status: "",
 };
 
-const AdminOrderDetailsView = ({orderDetails}) => {
+const AdminOrderDetailsView = ({ orderDetails }) => {
   const { user } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState(initialFormData);
 
+  const dispatch = useDispatch();
+
+  const { toast } = useToast();
+
   const handleUpdateStatus = (event) => {
     event.preventDefault();
+    const { status } = formData;
+    dispatch(
+      updateOrderStatus({ id: orderDetails?._id, orderStatus: status })
+    ).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(getOrdersDetailsForAdmin(orderDetails?._id));
+        dispatch(getAllOrdersForAdmin());
+        setFormData(initialFormData);
+        toast({
+          title: data?.payload?.message,
+          varient: "destructive",
+        });
+      }
+    });
   };
 
   return (
     <DialogContent className="sm:max-w-[600px] bg-white">
-     <div className="grid gap-6">
-            <div className="grid gap-2">
-              <div className="flex mt-6 items-center justify-center">
-                <p className="font-medium mr-1 mb-1">Order ID:</p>
-                <Label> {123456}</Label>
-              </div>
-              <div className="flex mt-2 items-center justify-center">
-                <p className="font-medium  mr-1 mb-1">Order Date: </p>
-                <Label className="">{orderDetails?.orderDate.split("T")[0]}</Label>
-              </div>
-              <div className="flex mt-2 items-center justify-center">
-                <p className="font-medium  mr-1 mb-1">Order Price:</p>
-                <Label>{orderDetails?.totalAmount}</Label>
-              </div>
-              <div className="flex mt-2 items-center justify-center ">
-                <p className="font-medium  mr-1 mb-1">Payment Method:</p>
-                <Label>{orderDetails?.paymentMethod}</Label>
-              </div>
-              <div className="flex mt-2 items-center justify-center ">
-                <p className="font-medium  mr-1 mb-1">Payment Status:</p>
-                <Label>{orderDetails?.paymentStatus}</Label>
-              </div>
-              <div className="flex mt-2 items-center justify-center ">
-                <p className="font-medium  mr-1 mb-1">Order Status:</p>
-                <Label>{orderDetails?.orderStatus}</Label>
-              </div>
-            </div>
+      <div className="grid gap-6">
+        <div className="grid gap-2">
+          <div className="flex mt-6 items-center justify-center">
+            <p className="font-medium mr-1 mb-1">Order ID:</p>
+            <Label> {123456}</Label>
+          </div>
+          <div className="flex mt-2 items-center justify-center">
+            <p className="font-medium  mr-1 mb-1">Order Date: </p>
+            <Label className="">{orderDetails?.orderDate.split("T")[0]}</Label>
+          </div>
+          <div className="flex mt-2 items-center justify-center">
+            <p className="font-medium  mr-1 mb-1">Order Price:</p>
+            <Label>{orderDetails?.totalAmount}</Label>
+          </div>
+          <div className="flex mt-2 items-center justify-center ">
+            <p className="font-medium  mr-1 mb-1">Payment Method:</p>
+            <Label>{orderDetails?.paymentMethod}</Label>
+          </div>
+          <div className="flex mt-2 items-center justify-center ">
+            <p className="font-medium  mr-1 mb-1">Payment Status:</p>
+            <Label>{orderDetails?.paymentStatus}</Label>
+          </div>
+          <div className="flex mt-2 items-center justify-center ">
+            <p className="font-medium  mr-1 mb-1">Order Status:</p>
+            <Label>
+              <Badge
+                className={`py-1 px-3 ${
+                  orderDetails?.orderStatus === "confirmed"
+                    ? "bg-green-500"
+                    : orderDetails?.orderStatus === "rejected"
+                    ? "bg-red-500"
+                    : "bg-black-500"
+                }`}
+              >
+                {orderDetails?.orderStatus}
+              </Badge>
+            </Label>
+          </div>
+        </div>
         <Separator />
         <div className="grid gap-4">
           <div className="grid gap-2">

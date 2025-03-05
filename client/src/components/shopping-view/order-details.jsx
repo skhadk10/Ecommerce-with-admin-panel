@@ -4,6 +4,7 @@ import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
 import CommonForm from "../common/form";
 import { useSelector } from "react-redux";
+import { Badge } from "../ui/badge";
 
 const initailsFormData = {
   status: "",
@@ -41,7 +42,20 @@ const ShoppingOrderDetails = ({ orderDetails }) => {
           </div>
           <div className="flex mt-2 items-center justify-center ">
             <p className="font-medium  mr-1 mb-1">Order Status:</p>
-            <Label>{orderDetails?.orderStatus}</Label>
+            <Label>
+          
+              <Badge
+                className={`py-1 px-3 ${
+                  orderDetails?.orderStatus === "confirmed"
+                    ? "bg-green-500"
+                    : orderDetails?.orderStatus === "rejected"
+                    ? "bg-red-500"
+                    : "bg-black-500"
+                }`}
+              >
+                {orderDetails?.orderStatus}
+              </Badge>
+            </Label>
           </div>
         </div>
         <Separator />

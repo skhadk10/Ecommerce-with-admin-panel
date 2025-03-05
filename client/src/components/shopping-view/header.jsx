@@ -1,5 +1,10 @@
 import { HousePlug, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,10 +31,14 @@ import { set } from "react-hook-form";
 
 const MenuItems = ({ setOpen }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
   function handleNavigate(getCurrentMenuItem) {
     sessionStorage.removeItem("filters");
     const currentFilter =
-      getCurrentMenuItem.id !== "home"
+      getCurrentMenuItem.id !== "home" && getCurrentMenuItem.id !== "products"
         ? {
             category: [getCurrentMenuItem.id],
           }
@@ -37,7 +46,11 @@ const MenuItems = ({ setOpen }) => {
 
     sessionStorage.setItem("filters", JSON.stringify(currentFilter));
 
-    navigate(getCurrentMenuItem.path);
+    location.pathname.includes("listing") && currentFilter !== null
+      ? setSearchParams(
+          new URLSearchParams(`?category=${getCurrentMenuItem.id}`)
+        )
+      : navigate(getCurrentMenuItem.path);
   }
 
   return (
