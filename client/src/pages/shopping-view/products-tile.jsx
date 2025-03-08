@@ -9,6 +9,7 @@ const ShoppingProductTile = ({
   handleGetProductDetails,
   handleAddToCart,
 }) => {
+  
   return (
     <Card className="w-full max-w-sm mx-auto">
       <div
@@ -63,16 +64,12 @@ const ShoppingProductTile = ({
       </div>
       <CardFooter>
         {product?.totalStock === 0 ? (
-          <Button
-            onClick={() => handleAddToCart(product?._id)}
-            className="w-full opacity-60 cursor-not-allowed"
-            disabled
-          >
+          <Button className="w-full opacity-60 cursor-not-allowed" disabled>
             Out Of Stock
           </Button>
         ) : (
           <Button
-            onClick={() => handleAddToCart(product?._id)}
+            onClick={() => handleAddToCart(product?._id, product?.totalStock)}
             className="w-full"
           >
             Add to Cart
