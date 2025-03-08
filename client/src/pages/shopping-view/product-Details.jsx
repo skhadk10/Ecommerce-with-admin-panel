@@ -85,12 +85,22 @@ const ProductDetails = ({ open, setOpen, productDetails }) => {
             <span className="text-muted-foreground">(4.5)</span>
           </div>
           <div className="mt-5 mb-5">
-            <Button
-              onClick={() => handleAddToCart(productDetails._id)}
-              className="w-full bg-black text-white text-md hover:text-black"
-            >
-              Add to Cart
-            </Button>
+            {productDetails?.totalStock === 0 ? (
+              <Button
+                onClick={() => handleAddToCart(productDetails?._id)}
+                className="w-full  bg-black text-white text-md hover:text-black opacity-60 cursor-not-allowed"
+                disabled
+              >
+                Out Of Stock
+              </Button>
+            ) : (
+              <Button
+                onClick={() => handleAddToCart(productDetails?._id)}
+                className="w-full bg-black text-white text-md hover:text-black"
+              >
+                Add to Cart
+              </Button>
+            )}
           </div>{" "}
           <Separator />
           <div className="max-h-[300px] overflow-auto">
