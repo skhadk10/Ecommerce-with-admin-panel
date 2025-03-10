@@ -17,31 +17,26 @@ export const getSearchResults = createAsyncThunk(
     return result?.data;
   }
 );
-const SearchSlice = createSlice({
-  name: "shoppingProducts",
+const searchSlice = createSlice({
+  name: "searchSlice",
   initialState,
-  reducer: {
-    setProductDetails: (state) => {
-      state.productDetails = null;
+  reducers: {
+    resetSearchResults: (state) => {
+      state.searchResults = [];
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getSearchResults.pending, (state, action) => {
+      .addCase(getSearchResults.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getSearchResults.fulfilled, (state, action) => {
-        (state.isLoading = false),
-          (state.searchResults = action.payload.success
-            ? action.payload.data
-            : []);
+        (state.isLoading = false), (state.searchResults = action.payload.data);
       })
-      .addCase(getSearchResults.rejected, (state, action) => {
+      .addCase(getSearchResults.rejected, (state) => {
         (state.isLoading = false), (state.searchResults = []);
       });
   },
 });
-
-export const { setProductDetails } = SearchSlice.actions;
-
-export default SearchSlice.reducer;
+export const { resetSearchResults } = searchSlice.actions;
+export default searchSlice.reducer;

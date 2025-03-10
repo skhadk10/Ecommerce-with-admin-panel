@@ -36,7 +36,7 @@ export const fecthProductDetails = createAsyncThunk(
 const ShoppingProductSlice = createSlice({
   name: "shoppingProducts",
   initialState,
-  reducer: {
+  reducers: {
     setProductDetails: (state) => {
       state.productDetails = null;
     },
