@@ -52,6 +52,9 @@ const ShoppingProductSlice = createSlice({
             ? action.payload.data
             : []);
       })
+      .addCase(fetchAllFilteredProducts.rejected, (state, action) => {
+        (state.isLoading = false), (state.productDetails = null);
+      })
       .addCase(fecthProductDetails.rejected, (state, action) => {
         (state.isLoading = false), (state.productList = []);
       })
@@ -63,9 +66,6 @@ const ShoppingProductSlice = createSlice({
           (state.productDetails = action.payload.success
             ? action.payload.data
             : null);
-      })
-      .addCase(fetchAllFilteredProducts.rejected, (state, action) => {
-        (state.isLoading = false), (state.productDetails = null);
       });
   },
 });
