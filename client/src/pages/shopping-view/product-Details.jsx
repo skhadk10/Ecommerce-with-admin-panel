@@ -40,7 +40,7 @@ const ProductDetails = ({ open, setOpen, productDetails }) => {
         reviewValue: rating,
       })
     ).then((data) => {
-      if(data?.payload?.success) {
+      if (data?.payload?.success) {
         setRating(0);
         setReviewMsg("");
         dispatch(getReview(productDetails?._id));
@@ -52,8 +52,8 @@ const ProductDetails = ({ open, setOpen, productDetails }) => {
   };
 
   useEffect(() => {
-    productDetails!==null && dispatch(getReview(productDetails?._id));
-      },[productDetails])
+    productDetails !== null && dispatch(getReview(productDetails?._id));
+  }, [productDetails]);
 
   const handleAddToCart = (getCurrentProductId, getTotalStock) => {
     console.log(getCurrentProductId, getTotalStock, "getcurrentproductid");
@@ -99,7 +99,11 @@ const ProductDetails = ({ open, setOpen, productDetails }) => {
     setReviewMsg("");
   }
 
-
+  const averageReview =
+    reviews && reviews.length > 0
+      ? reviews.reduce((sum, reviewItem) => sum + reviewItem.reviewValue, 0) /
+        reviews.length
+      : 0;
 
   return (
     <Dialog open={open} onOpenChange={handleDialogClose}>
@@ -140,13 +144,11 @@ const ProductDetails = ({ open, setOpen, productDetails }) => {
           </div>
           <div className="flex items-center gap-2 mt-2">
             <div className="flex items-center gap-0.5">
-              <StarIcon className="w-5 h-5 fill primary" />
-              <StarIcon className="w-5 h-5 fill primary" />
-              <StarIcon className="w-5 h-5 fill primary" />
-              <StarIcon className="w-5 h-5 fill primary" />
-              <StarIcon className="w-5 h-5 fill primary" />
+              <StarRatingComponent rating={averageReview} />
             </div>
-            <span className="text-muted-foreground">(4.5)</span>
+            <span className="text-muted-foreground">
+              {averageReview.toFixed(2)}
+            </span>
           </div>
           <div className="mt-5 mb-5">
             {productDetails?.totalStock === 0 ? (
@@ -174,7 +176,7 @@ const ProductDetails = ({ open, setOpen, productDetails }) => {
           <div className="max-h-[300px] overflow-auto">
             <h1 className="texl-xl font-bold mb-4">Reviews</h1>
             <div className="grid gap-6">
-            {reviews && reviews.length > 0 ? (
+              {reviews && reviews.length > 0 ? (
                 reviews.map((reviewItem) => (
                   <div key={reviewItem._id} className="flex gap-4">
                     <Avatar className="w-10 h-10 border">
@@ -198,7 +200,6 @@ const ProductDetails = ({ open, setOpen, productDetails }) => {
               ) : (
                 <h1>No Reviews</h1>
               )}
-          
             </div>
             <div className="mt-10 flex-col flex gap-2">
               <Label>Write a review</Label>

@@ -75,7 +75,6 @@ const ShoppingCheckout = () => {
   if (approvalURL) {
     window.location.href = approvalURL;
   }
-  console.log(approvalURL, "url");
 
   const totalCartAmount =
     cartitems && cartitems?.items && cartitems?.items.length > 0
@@ -90,15 +89,16 @@ const ShoppingCheckout = () => {
         )
       : 0;
 
-  console.log(currentSelectedAddress, "checkin address");
-
   return (
     <div className="flex flex-col">
       <div className="relative h-[300px] w-full overflow-hidden">
         <img src={Img} className="h-full w-full object-cover object-center" />
       </div>
       <div className="grid gird-cols-1 sm:grid-cols-2 gap-5 mt-5 p-5 ">
-        <Address setCurrentSelectedAddress={setCurrentSelectedAddress} />
+        <Address
+          selectedId={currentSelectedAddress}
+          setCurrentSelectedAddress={setCurrentSelectedAddress}
+        />
         <div className="flex flex-col gap-4">
           {cartitems && cartitems.items && cartitems.items.length > 0 ? (
             cartitems?.items.map((item) => (
@@ -118,7 +118,7 @@ const ShoppingCheckout = () => {
               onClick={handleInitialPaypalPayment}
               className="w-full hover:bg-black hover:text-white"
             >
-              Checkout with Paypal
+              {isPaymentStart ? "Processing payment..." : " Checkout with Paypal"}
             </Button>
           </div>
         </div>
