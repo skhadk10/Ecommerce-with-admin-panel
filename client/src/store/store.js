@@ -8,6 +8,7 @@ import shopAddressReducer from "./shop/address-slice/index.js";
 import shopOrderReducer from "./shop/order-slice/index.js";
 import shopSearchReducer from "./shop/search-slice/index.js";
 import shopReviewReducer from "./shop/review-slice/index.js";
+import commonFeatureSlice from "./common-slice/index.js";
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -19,6 +20,7 @@ const store = configureStore({
     shopOrder: shopOrderReducer,
     shopSearch: shopSearchReducer,
     shopReview: shopReviewReducer,
+    commonFeature: commonFeatureSlice,
   },
 });
 

@@ -15,6 +15,9 @@ import shopOrderRouter from "./routes/shop/order-routes.js";
 import shopSearchRouter from "./routes/shop/search-routes.js";
 import shopReviewRouter from "./routes/shop/review-routes.js";
 
+
+import commonFeatureRouter from "./routes/common/feature-routes.js";
+
 // create a database connection
 mongoose
   .connect("mongodb://localhost:27017/ecommerce")
@@ -54,5 +57,7 @@ app.use("/api/shop/address", shopAddressRouter);
 app.use("/api/shop/order", shopOrderRouter);
 app.use("/api/shop/search", shopSearchRouter);
 app.use("/api/shop/review", shopReviewRouter);
+
+app.use("/api/common/feature", commonFeatureRouter);
 
 app.listen(PORT, () => console.log(`Server is runnin g on port ${PORT}`));

@@ -14,6 +14,7 @@ const ProductImageUpload = ({
   imageLoadingState,
   setImageLoadingState,
   iseditMode,
+  isCustomStyling = false,
 }) => {
   const inputRef = useRef(null);
 
@@ -57,7 +58,9 @@ const ProductImageUpload = ({
     if (imageFile !== null) uploadImageToCloudinary();
   }, [imageFile]);
   return (
-    <div className="w-full max-w-md mx-auto mt-4">
+    <div
+      className={`w-full  mt-4 ${isCustomStyling ? "" : "max-w-md mx-auto"}`}
+    >
       <Label className="text-lg font-semibold mb-2 block">Image upload</Label>
 
       <div
